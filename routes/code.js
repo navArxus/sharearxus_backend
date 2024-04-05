@@ -4,7 +4,7 @@ const projectModel = require("../Model/project")
 router.post("/:roomID/commit", async (req, res) => {
     const date = new Date(Date.now())
     try {
-        console.log(req.params.roomID)
+        // console.log(req.params.roomID)
         const modelexist = await projectModel.findOne({ roomID: req.params.roomID })
         if (!modelexist) {
             return res.status(403).send('Room does not exist')

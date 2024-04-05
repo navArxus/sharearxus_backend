@@ -39,8 +39,7 @@ app.use("/user", userRoutes)
 app.use("/code", codeRoutes)
 
 app.get("/", (req, res) => {
-    console.log(res)
-    console.log(res.cookies)
+    // console.log(res.cookies)
     res.send("Hello world")
 })
 
