@@ -11,7 +11,7 @@ const cors = require('cors')
 app.use(cors(
     {
         credentials: true,
-        origin: 'https://sharearxus.vercel.app/',
+        origin: 'https://sharearxus.vercel.app',
     }
 ))
 app.set("trust proxy", 1)
@@ -50,7 +50,7 @@ const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
         credentials: true,
-        origin: 'https://sharearxus.vercel.app/',
+        origin: 'https://sharearxus.vercel.app',
     }
 })
 
