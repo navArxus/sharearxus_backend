@@ -8,10 +8,12 @@ const http = require('http')
 const { createRoom, checkRoom } = require('./controllers/Room')
 
 const cors = require('cors')
-app.use(cors({
-    credentials: true,
-    origin: 'http://localhost:3000',
-}))
+app.use(cors(
+    {
+        credentials: true,
+        origin: 'https://sharearxus.vercel.app/',
+    }
+))
 app.set("trust proxy", 1)
 // mongoose connect 
 const mongoose = require("mongoose")
@@ -47,7 +49,8 @@ app.get("/", (req, res) => {
 const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000"
+        credentials: true,
+        origin: 'https://sharearxus.vercel.app/',
     }
 })
 
@@ -89,7 +92,7 @@ io.on('connection', (socket) => {
         io.to(msg.roomID).emit("new-commit", {
             roomID: msg.roomID,
             tempararyID: msg.tempararyID,
-            msg:"New commit avaiable" 
+            msg: "New commit avaiable"
         })
     })
 })
