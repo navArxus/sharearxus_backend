@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const { createHmac } = require("crypto");
 const { genrateToken } = require("../services/auth");
+const bcrypt = require("bcrypt")
 // coNFIGURE FOR DOT ENV 
 require('dotenv').config();
 
@@ -30,24 +31,25 @@ userSchema.pre('save', async function () {
     const user = this;
 
     const salt = process.env.salt;
-    const hashpassword = await createHmac('sha512', salt).update(user.password).digest('hex');
+    const hashpassword = await bcrypt.hash(user.password, 10);
     this.password = hashpassword;
 })
 
 userSchema.static("matchpassword", async function (email, password) {
-    const salt = process.env.salt;
     const user = await this.findOne({ email });
     if (!user) {
         return "No such user"
     }
     // console.log(user)
-    const genrateHashForProvided = await createHmac('sha512', salt).update(password).digest('hex')
+    const res = await bcrypt.compare(password, user.password)
+    // console.log(res)
+    // const genrateHashForProvided = await createHmac('sha512', salt).update(password).digest('hex')
     // console.log("user password : ",user.password)
     // console.log("hash password : ",genrateHashForProvided)
-    return (user.password === genrateHashForProvided) ? genrateToken({
-        email : user.email,
-        temparayID : user.temparayID,
-        firstName : user.firstName
+    return (res) ? genrateToken({
+        email: user.email,
+        temparayID: user.temparayID,
+        firstName: user.firstName
     }) : null;
 
 })
