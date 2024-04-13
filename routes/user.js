@@ -48,7 +48,7 @@ router.post("/verifyotp", async (req, res) => {
             await otpmodel.deleteOne({ email: email })
             res.status(200).send('OTP verified')
         } else {
-            res.status(401).send('Wrong OTP Entered')
+            res.status(201).send('Wrong OTP Entered')
         }
     }
 })
