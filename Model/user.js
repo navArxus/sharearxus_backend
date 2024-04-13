@@ -30,7 +30,6 @@ const userSchema = mongoose.Schema({
 userSchema.pre('save', async function () {
     const user = this;
 
-    const salt = process.env.salt;
     const hashpassword = await bcrypt.hash(user.password, 10);
     this.password = hashpassword;
 })

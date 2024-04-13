@@ -8,15 +8,17 @@ const otpmodel = require("../Model/otp")
 router.post("/login", async (req, res) => {
     console.log(res.cookies)
     const result = await userModel.matchpassword(req.body.email, req.body.password)
-    res.cookie("token", result, {
-        httpOnly: true,
-        path: "https://sharearxus.vercel.app/"
-    })
-    res.send(result)
+    if (result) {
+        res.cookie("token", result, {
+            httpOnly: true,
+            path: "https://sharearxus.vercel.app/"
+        })
+        res.send(result)
+    }
+    res.status(401).send({message: 'Invalid Email or Password' });
 })
 router.post("/signup", async (req, res) => {
     const id = "socketID"
-    console.log("signuprequest recive")
     const user = await userModel.create({
         firstName: req.body.firstName,
         email: req.body.email,
@@ -46,9 +48,9 @@ router.post("/verifyotp", async (req, res) => {
     } else {
         if (otp === emailindatabase.otp) {
             await otpmodel.deleteOne({ email: email })
-            res.status(200).send('OTP verified')
+            res.status(200).send({message:'OTP verified'})
         } else {
-            res.status(201).send('Wrong OTP Entered')
+            res.status(401).send({message:'Wrong OTP Entered'})
         }
     }
 })
