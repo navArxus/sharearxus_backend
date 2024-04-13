@@ -8,9 +8,9 @@ const otpmodel = require("../Model/otp")
 router.post("/login", async (req, res) => {
     console.log(res.cookies)
     const result = await userModel.matchpassword(req.body.email, req.body.password)
-    res.cookie("tokennn", result,{
-        httpOnly:true,
-        path:"/"
+    res.cookie("token", result, {
+        httpOnly: true,
+        path: "https://sharearxus.vercel.app/"
     })
     res.send(result)
 })
