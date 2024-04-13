@@ -63,8 +63,6 @@ const io = new Server(server, {
     }
 })
 
-// Testing github commit issue 
-
 io.on('connection', (socket) => {
     console.log("some one connected and its id is", socket.id)
     socket.on("create-room", async msg => {
