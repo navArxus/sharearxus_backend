@@ -6,16 +6,17 @@ const otpGenerator = require('otp-generator')
 const otpmodel = require("../Model/otp")
 
 router.post("/login", async (req, res) => {
-    console.log(res.cookies)
     const result = await userModel.matchpassword(req.body.email, req.body.password)
+    console.log(result);
     if (result) {
         res.cookie("token", result, {
             httpOnly: true,
             path: "https://sharearxus.vercel.app/"
         })
-        res.send(result)
+        res.status(200).json({ message: result })
+    } else {
+        res.status(203).json({ message: 'Invalid Email or Password' });
     }
-    res.status(401).send({message: 'Invalid Email or Password' });
 })
 router.post("/signup", async (req, res) => {
     const id = "socketID"
@@ -34,11 +35,12 @@ router.post("/signup", async (req, res) => {
         // send mail with the generated OTP to the registered Email ID
         await sendemail(req.body.email, "Verification for shareARXUS", "Your One Time Password  is : " + genratedotp);
         console.log("Email sent to ", req.body.email)
+        res.json({message:"Email sent successfully",email:user.email});
     } catch (error) {
         console.log(error)
+        res.status(203).json({message:"Could not sent successfully",email:user.email});
     }
 
-    res.json(user.email);
 })
 router.post("/verifyotp", async (req, res) => {
     const { email, otp } = req.body
@@ -48,9 +50,9 @@ router.post("/verifyotp", async (req, res) => {
     } else {
         if (otp === emailindatabase.otp) {
             await otpmodel.deleteOne({ email: email })
-            res.status(200).send({message:'OTP verified'})
+            res.status(200).send({ message: 'OTP verified' })
         } else {
-            res.status(401).send({message:'Wrong OTP Entered'})
+            res.status(203).send({ message: 'Wrong OTP Entered' })
         }
     }
 })

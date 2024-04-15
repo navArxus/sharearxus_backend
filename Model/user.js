@@ -37,11 +37,11 @@ userSchema.pre('save', async function () {
 userSchema.static("matchpassword", async function (email, password) {
     const user = await this.findOne({ email });
     if (!user) {
-        return "No such user"
+        return null
     }
     // console.log(user)
     const res = await bcrypt.compare(password, user.password)
-    // console.log(res)
+    console.log(res)
     // const genrateHashForProvided = await createHmac('sha512', salt).update(password).digest('hex')
     // console.log("user password : ",user.password)
     // console.log("hash password : ",genrateHashForProvided)

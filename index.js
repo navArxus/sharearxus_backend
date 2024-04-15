@@ -11,7 +11,7 @@ const cors = require('cors')
 app.use(cors(
     {
         credentials: true,
-        origin: 'https://sharearxus.vercel.app',
+        origin: 'http://localhost:3000',
     }
 ))
 
@@ -59,7 +59,7 @@ app.get("/", (req, res) => {
 const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: 'https://sharearxus.vercel.app',
+        origin: 'http://localhost:3000',
     }
 })
 
@@ -82,7 +82,7 @@ io.on('connection', (socket) => {
         try {
             const roomExist = await checkRoom(msg.roomID)
             if (!roomExist) {
-                io.to(socket.id).emit("No room Found")
+                io.to(socket.id).emit("No-room-Found",{})
             } else {
 
                 socket.join(msg.roomID)

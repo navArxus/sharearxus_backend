@@ -7,7 +7,7 @@ router.post("/:roomID/commit", async (req, res) => {
         // console.log(req.params.roomID)
         const modelexist = await projectModel.findOne({ roomID: req.params.roomID })
         if (!modelexist) {
-            return res.status(401).send({ message: 'Room does not exist' })
+            return res.status(203).send({ message: 'Room does not exist' })
         } else {
             const model = await projectModel.findOneAndUpdate({ roomID: req.params.roomID, 'codeSnippet.name': req.body.snippetName }, {
                 $set: {
@@ -33,7 +33,7 @@ router.get("/:roomID/detail", async (req, res) => {
     try {
         const modelexist = await projectModel.findOne({ roomID: req.params.roomID })
         if (!modelexist) {
-            return res.status(401).send({ message: "Room not found" })
+            return res.status(203).send({ message: "Room not found" })
         }
         return res.status(200).json(modelexist)
     } catch (error) {
