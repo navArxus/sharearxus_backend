@@ -82,7 +82,7 @@ io.on('connection', (socket) => {
         try {
             const roomExist = await checkRoom(msg.roomID)
             if (!roomExist) {
-                io.to(socket.id).emit("No room Found")
+                io.to(socket.id).emit("No-room-Found",{})
             } else {
 
                 socket.join(msg.roomID)
